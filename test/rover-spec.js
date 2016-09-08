@@ -88,5 +88,57 @@ describe('mars rover', function() {
         assert.deepEqual(testRover.currentLocation(), [1,2]);
       })
     });
+
+    describe('command given is l', function() {
+      it('should change facing direction to N when facing E', function() {
+        var testRover = new Rover([1,1], 'E');
+        testRover.giveCommands(['l']);
+        assert.deepEqual(testRover.facing, 'N');
+      });
+
+      it('should change facing direction to E when facing S', function() {
+        var testRover = new Rover([1,1], 'S');
+        testRover.giveCommands(['l']);
+        assert.deepEqual(testRover.facing, 'E');
+      });
+
+      it('should change facing direction to S when facing W', function() {
+        var testRover = new Rover([1,1], 'W');
+        testRover.giveCommands(['l']);
+        assert.deepEqual(testRover.facing, 'S');
+      });
+
+      it('should change facing direction to W when facing N', function() {
+        var testRover = new Rover([1,1], 'N');
+        testRover.giveCommands(['l']);
+        assert.deepEqual(testRover.facing, 'W');
+      });
+    });
+
+    describe('command given is r', function() {
+      it('should change facing direction to S when facing E', function() {
+        var testRover = new Rover([1,1], 'E');
+        testRover.giveCommands(['r']);
+        assert.deepEqual(testRover.facing, 'S');
+      });
+
+      it('should change facing direction to W when facing S', function() {
+        var testRover = new Rover([1,1], 'S');
+        testRover.giveCommands(['r']);
+        assert.deepEqual(testRover.facing, 'W');
+      });
+
+      it('should change facing direction to N when facing W', function() {
+        var testRover = new Rover([1,1], 'W');
+        testRover.giveCommands(['r']);
+        assert.deepEqual(testRover.facing, 'N');
+      });
+
+      it('should change facing direction to E when facing N', function() {
+        var testRover = new Rover([1,1], 'N');
+        testRover.giveCommands(['r']);
+        assert.deepEqual(testRover.facing, 'E');
+      });
+    });
   });
 });
