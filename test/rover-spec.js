@@ -1,15 +1,21 @@
 var chai = require('chai');
 var assert = chai.assert;
-var rover - require('rover');
+var Rover = require('../rover');
 
 describe('mars rover', function() {
   describe('initialization of rover', function() {
-    it('should set the initial location', function() {
+    var testRover;
 
+    before(function() {
+      testRover = new Rover('testlocation', 'testdirection');
+    })
+
+    it('should set the initial location', function() {
+      assert.equal(testRover.location, 'testlocation');
     });
 
-    it('should set the direction the rover is facing', function() {
-
+    it('should set the direction', function() {
+      assert.equal(testRover.direction, 'testdirection');
     });
   });
 
