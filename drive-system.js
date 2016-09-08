@@ -1,3 +1,5 @@
+"use strict"
+
 const NAVIGATION = {
   E: {direc: 1, axis: 'x'},
   W: {direc: -1, axis: 'x'},
@@ -10,22 +12,23 @@ const COMPASS = ['N', 'E', 'S', 'W'];
 function moveForOrBack(direction) {
   var fOrB = direction === 'f' ? 1 : -1;
   var navInfo = NAVIGATION[this.facing];
-  var updatedLoc = this.location[navInfo.axis] += navInfo.direc * fOrB;
-  this.location[navInfo.axis] = wrapIfOffGrid.call(this, updatedLoc, navInfo.axis)
+  var updatedLoc = this.location[navInfo.axis] + navInfo.direc * fOrB;
+  var newLoc = wrapIfOffGrid.call(this, updatedLoc, navInfo.axis);
+  return {newLoc: newLoc, axis: navInfo.axis};
 }
 
 function turnLeftOrRight(direction) {
   var lOrR = direction === 'r' ? 1 : -1;
   var newPos = COMPASS.indexOf(this.facing) + lOrR;
   newPos = newPos > 3 ? 0 : (newPos < 0 ? 3 : newPos);
-  this.facing = COMPASS[newPos];
+  return {newFacing: COMPASS[newPos]};
 }
 
 function wrapIfOffGrid(loc, axis) {
-  if (loc > this.grid[axis]) {
+  if (loc > this.world.grid[axis]) {
     return 1;
   } else if (loc < 1) {
-    return this.grid[axis];
+    return this.world.grid[axis];
   } else {
     return loc;
   }
@@ -33,8 +36,10 @@ function wrapIfOffGrid(loc, axis) {
 
 module.exports.move = function(direction) {
   if (direction === 'f' || direction === 'b') {
-    moveForOrBack.call(this, direction);
+    return moveForOrBack.call(this, direction);
   } else if (direction === 'l' || direction === 'r') {
-    turnLeftOrRight.call(this, direction);
+    return turnLeftOrRight.call(this, direction);
+  } else {
+    return {};
   }
 };

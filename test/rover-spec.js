@@ -144,31 +144,31 @@ describe('mars rover', function() {
 
     describe('wrapping around a grid', function() {
       it('should set grid size during initialization', function() {
-        var testRover = new Rover([1,1], 'N', [100,10]);
-        assert.equal(testRover.grid.x, 100);
-        assert.equal(testRover.grid.y, 10);
+        var testRover = new Rover([1,1], 'N');
+        assert.equal(testRover.world.grid.x, 10);
+        assert.equal(testRover.world.grid.y, 10);
       });
 
       it('should set rover location wrap vertically if move below bottom of grid', function() {
-        var testRover = new Rover([1,8], 'N', [10,10]);
+        var testRover = new Rover([1,8], 'N');
         testRover.giveCommands(['b', 'b', 'b']);
         assert.deepEqual(testRover.currentLocation(), [1,1])
       });
 
       it('should set rover location wrap vertically if move above top of grid', function() {
-        var testRover = new Rover([1,2], 'N', [10,10]);
+        var testRover = new Rover([1,2], 'N');
         testRover.giveCommands(['f', 'f']);
         assert.deepEqual(testRover.currentLocation(), [1,10])
       });
 
       it('should set rover location wrap horizontally if move off grid to the left', function() {
-        var testRover = new Rover([2,2], 'N', [10,10]);
+        var testRover = new Rover([2,2], 'N');
         testRover.giveCommands(['l', 'f', 'f']);
         assert.deepEqual(testRover.currentLocation(), [10,2])
       });
 
       it('should set rover location wrap horizontally if move off grid to the right', function() {
-        var testRover = new Rover([9,2], 'N', [10,10]);
+        var testRover = new Rover([9,2], 'N');
         testRover.giveCommands(['r', 'f', 'f']);
         assert.deepEqual(testRover.currentLocation(), [1,2])
       });
@@ -178,7 +178,7 @@ describe('mars rover', function() {
       it ('should set obstacles at initialization', function() {
         var testWorld = new World([10,10], [[2,2], [6,6]]);
         assert.deepEqual(testWorld.grid, {x: 10, y: 10});
-        assert.deepEqual(testWorld.obstacles, [[2,2],[6,6]]);
+        assert.deepEqual(testWorld.obstacles, [{x: 2, y:2},{x:6, y:6}]);
       })
     })
 
@@ -186,8 +186,8 @@ describe('mars rover', function() {
       it('should stop if next move would cause a collision', function() {
         var testWorld = new World([10,10], [[3,3], [6,6]]);
         var testRover = new Rover([1,1], 'N', testWorld);
-        testRover.giveCommands(['b', 'r', 'f', 'f', 'f', 'f']);
-        assert.deepEqual(testRover.currentLocation(), [2,2]);
+        testRover.giveCommands(['b', 'b', 'r', 'f', 'f', 'f', 'f']);
+        assert.deepEqual(testRover.currentLocation(), [2,3]);
       });
     });
   });
