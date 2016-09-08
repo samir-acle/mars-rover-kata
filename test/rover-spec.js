@@ -1,6 +1,7 @@
 var chai = require('chai');
 var assert = chai.assert;
 var Rover = require('../rover');
+var World = require('../world');
 
 describe('mars rover', function() {
   describe('initialization of rover', function() {
@@ -170,6 +171,23 @@ describe('mars rover', function() {
         var testRover = new Rover([9,2], 'N', [10,10]);
         testRover.giveCommands(['r', 'f', 'f']);
         assert.deepEqual(testRover.currentLocation(), [1,2])
+      });
+    });
+
+    describe('world', function() {
+      it ('should set obstacles at initialization', function() {
+        var testWorld = new World([10,10], [[2,2], [6,6]]);
+        assert.deepEqual(testWorld.grid, {x: 10, y: 10});
+        assert.deepEqual(testWorld.obstacles, [[2,2],[6,6]]);
+      })
+    })
+
+    describe('collision detection', function() {
+      it('should stop if next move would cause a collision', function() {
+        var testWorld = new World([10,10], [[3,3], [6,6]]);
+        var testRover = new Rover([1,1], 'N', testWorld);
+        testRover.giveCommands(['b', 'r', 'f', 'f', 'f', 'f']);
+        assert.deepEqual(testRover.currentLocation(), [2,2]);
       });
     });
   });
