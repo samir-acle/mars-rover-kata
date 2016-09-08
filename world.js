@@ -1,4 +1,5 @@
 "use strict"
+
 var World = function(grid, obstacles) {
   this.grid = {x: grid[0], y: grid[1]};
   this.obstacles = obstacles.map(function(loc) {
