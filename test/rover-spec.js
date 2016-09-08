@@ -29,7 +29,7 @@ describe('mars rover', function() {
 
   describe('giveCommands', function() {
     it('should take character array and set commands', function() {
-      var testRover = new Rover([0,0], 'W');
+      var testRover = new Rover([1,1], 'W');
       var testCommands = ['a','d','d','s'];
       testRover.giveCommands(testCommands);
       assert.equal(testRover.commands, testCommands);
@@ -45,9 +45,9 @@ describe('mars rover', function() {
       });
 
       it('should decrease x location by 1 when facing W', function() {
-        var testRover = new Rover([1,1], 'W');
+        var testRover = new Rover([2,1], 'W');
         testRover.giveCommands(['f']);
-        assert.deepEqual(testRover.currentLocation(), [0,1]);
+        assert.deepEqual(testRover.currentLocation(), [1,1]);
       });
 
       it('should increase y location by 1 when facing S', function() {
@@ -57,17 +57,17 @@ describe('mars rover', function() {
       });
 
       it('should decrease y location by 1 when facing N', function() {
-        var testRover = new Rover([1,1], 'N');
+        var testRover = new Rover([1,2], 'N');
         testRover.giveCommands(['f']);
-        assert.deepEqual(testRover.currentLocation(), [1,0]);
+        assert.deepEqual(testRover.currentLocation(), [1,1]);
       })
     });
 
     describe('command given is b', function() {
       it('should decrease x location by 1 when facing E', function() {
-        var testRover = new Rover([1,1], 'E');
+        var testRover = new Rover([2,1], 'E');
         testRover.giveCommands(['b']);
-        assert.deepEqual(testRover.currentLocation(), [0,1]);
+        assert.deepEqual(testRover.currentLocation(), [1,1]);
       });
 
       it('should increase x location by 1 when facing W', function() {
@@ -77,9 +77,9 @@ describe('mars rover', function() {
       });
 
       it('should decrease y location by 1 when facing S', function() {
-        var testRover = new Rover([1,1], 'S');
+        var testRover = new Rover([1,2], 'S');
         testRover.giveCommands(['b']);
-        assert.deepEqual(testRover.currentLocation(), [1,0]);
+        assert.deepEqual(testRover.currentLocation(), [1,1]);
       });
 
       it('should increase y location by 1 when facing N', function() {
@@ -138,6 +138,38 @@ describe('mars rover', function() {
         var testRover = new Rover([1,1], 'N');
         testRover.giveCommands(['r']);
         assert.deepEqual(testRover.facing, 'E');
+      });
+    });
+
+    describe('wrapping around a grid', function() {
+      it('should set grid size during initialization', function() {
+        var testRover = new Rover([1,1], 'N', [100,10]);
+        assert.equal(testRover.grid.x, 100);
+        assert.equal(testRover.grid.y, 10);
+      });
+
+      it('should set rover location wrap vertically if move below bottom of grid', function() {
+        var testRover = new Rover([1,8], 'N', [10,10]);
+        testRover.giveCommands(['b', 'b', 'b']);
+        assert.deepEqual(testRover.currentLocation(), [1,1])
+      });
+
+      it('should set rover location wrap vertically if move above top of grid', function() {
+        var testRover = new Rover([1,2], 'N', [10,10]);
+        testRover.giveCommands(['f', 'f']);
+        assert.deepEqual(testRover.currentLocation(), [1,10])
+      });
+
+      it('should set rover location wrap horizontally if move off grid to the left', function() {
+        var testRover = new Rover([2,2], 'N', [10,10]);
+        testRover.giveCommands(['l', 'f', 'f']);
+        assert.deepEqual(testRover.currentLocation(), [10,2])
+      });
+
+      it('should set rover location wrap horizontally if move off grid to the right', function() {
+        var testRover = new Rover([9,2], 'N', [10,10]);
+        testRover.giveCommands(['r', 'f', 'f']);
+        assert.deepEqual(testRover.currentLocation(), [1,2])
       });
     });
   });
