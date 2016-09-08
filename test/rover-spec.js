@@ -19,6 +19,15 @@ describe('mars rover', function() {
     });
   });
 
+  describe('giveCommands', function() {
+    it('should take character array and set commands', function() {
+      var testRover = new Rover('testlocation', 'testdirection');
+      var testCommands = ['a','d','d','s'];
+      testRover.giveCommands(testCommands);
+      assert.equal(testRover.commands, testCommands);
+    });
+  });
+
   describe('rover movement', function() {
     describe('command given is f', function() {
       it('should increase x location by 1 when facing E', function() {

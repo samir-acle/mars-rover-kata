@@ -3,4 +3,8 @@ var Rover = function(initLoc, initDirection) {
   this.direction = initDirection;
 };
 
+Rover.prototype.giveCommands = function(commands) {
+  this.commands = commands;
+}
+
 module.exports = Rover;
